@@ -27,9 +27,24 @@ public class HotelParser {
         String country = list.get(2);
         String city = list.get(3);
         String address = list.get(4);
-        double lng = Double.parseDouble(list.get(5));
-        double lat = Double.parseDouble(list.get(6));
+        double lng = 0;
         String geoHash = list.get(7);
+        double lat = Double.parseDouble(list.get(6));
+        try {
+            lng = Double.parseDouble(list.get(5));
+        }catch (NumberFormatException e){
+            geoHash = data.substring(data.lastIndexOf(comma) + 1);
+            System.out.println(geoHash);
+            data = data.substring(0, data.lastIndexOf(comma));
+            lat = Double.parseDouble(data.substring(data.lastIndexOf(comma) + 1));
+            System.out.println(lat);
+            data = data.substring(0, data.lastIndexOf(comma));
+            lng = Double.parseDouble(data.substring(data.lastIndexOf(comma) + 1));
+            System.out.println(lng);
+            data = data.substring(0, data.lastIndexOf(comma));
+            address = address + data.substring(data.lastIndexOf(comma) + 1);
+            System.out.println(address);
+        }
         return new HotelData(id, name, country, city ,address, lng, lat, geoHash);
     }
 }
