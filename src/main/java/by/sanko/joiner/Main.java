@@ -10,7 +10,9 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 public class Main {
@@ -26,8 +28,10 @@ public class Main {
         char comma = ',';
         final int giveUp = 100;
         int noRecordsCount = 0;
+        List<String> hotels = new ArrayList();
         while (true) {
             consumerHotel.poll(0);
+
             consumerHotel.seekToBeginning(consumerHotel.assignment());
             final ConsumerRecords<String, String> consumerRecords = consumerHotel.poll(1000);
             if (consumerRecords.count() == 0) {
@@ -41,11 +45,14 @@ public class Main {
             }
             consumerRecords.forEach(record -> {
                 String value = record.value();
-                System.out.println(value);
+                hotels.add(value);
             });
 
             consumerHotel.commitAsync();
         }
+        System.out.println("All rows are " + hotels.size());
+        System.out.println("First row is " + hotels.get(0));
+        System.out.println("Last row is " + hotels.get(hotels.size()));
     }
 
     private static void init(){
