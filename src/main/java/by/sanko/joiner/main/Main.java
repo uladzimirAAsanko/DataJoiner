@@ -47,8 +47,8 @@ public class Main {
         System.out.println("Last row is " + hotels.get(hotels.size() - 1));
         List<HotelData> hotelData = new ArrayList<>();
         for(String hotel : hotels){
-            HotelData data = HotelParser.parseData(hotel);
             System.out.println(hotel);
+            HotelData data = HotelParser.parseData(hotel);
             hotelData.add(data);
             System.out.println(data.toString());
         }
