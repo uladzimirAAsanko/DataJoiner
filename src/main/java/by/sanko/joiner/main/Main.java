@@ -48,6 +48,7 @@ public class Main {
         List<HotelData> hotelData = new ArrayList<>();
         for(String hotel : hotels){
             HotelData data = HotelParser.parseData(hotel);
+            System.out.println(hotel);
             hotelData.add(data);
             System.out.println(data.toString());
         }
