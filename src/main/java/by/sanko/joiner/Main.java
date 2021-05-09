@@ -25,7 +25,7 @@ public class Main {
         char comma = ',';
         final int giveUp = 100;
         int noRecordsCount = 0;
-        Set<String> hotels = new HashSet<>();
+        List<String> hotels = new ArrayList<>();
         consumerHotel.poll(0);
         consumerHotel.seekToBeginning(consumerHotel.assignment());
         while (true) {
@@ -48,8 +48,8 @@ public class Main {
             System.out.println("All rows are " + hotels.size());
             System.out.println("Counts are " + consumerRecords.count());
         }
-        consumerHotel.close();
         System.out.println("DONE");
+        consumerHotel.close();
         System.out.println("All rows are " + hotels.size());
     }
 
