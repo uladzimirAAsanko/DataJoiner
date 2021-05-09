@@ -15,7 +15,7 @@ import java.util.*;
 public class Main {
     private static final String CONNECTION = "host.docker.internal:9094";
     private static final String CONSUMER_GROUP = "KafkaExampleConsumer";
-    private static final String SUBSCRIBE_TOPIC = "not-hw-data-topic";
+    private static final String SUBSCRIBE_TOPIC = "hw-data-topic";
     private static final String OUTPUT_TOPIC = "weather-data-hash";
     static Consumer<String, String> consumerHotel = null;
     static Producer<String, String> producer = null;
@@ -26,9 +26,9 @@ public class Main {
         final int giveUp = 100;
         int noRecordsCount = 0;
         Set<String> hotels = new HashSet<>();
+        consumerHotel.poll(0);
+        consumerHotel.seekToBeginning(consumerHotel.assignment());
         while (true) {
-            consumerHotel.poll(0);
-            consumerHotel.seekToBeginning(consumerHotel.assignment());
             final ConsumerRecords<String, String> consumerRecords = consumerHotel.poll(1000);
             if (consumerRecords.count() == 0) {
                 noRecordsCount++;
