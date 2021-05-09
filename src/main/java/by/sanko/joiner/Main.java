@@ -35,7 +35,8 @@ public class Main {
             }
             consumerRecords.forEach(record -> {
                 String value = record.value();
-                hotels.add(value.substring(value.indexOf('\n') + 1));
+                int index = value.indexOf('\n');
+                hotels.add(value.substring(index + 1, value.indexOf('\n', index +1)));
             });
 
             consumerHotel.commitAsync();
