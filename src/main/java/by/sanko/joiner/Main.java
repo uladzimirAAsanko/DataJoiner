@@ -46,7 +46,7 @@ public class Main {
 
             consumerHotel.commitAsync();
             System.out.println("All rows are " + hotels.size());
-            System.out.println("Counts are " + consumerRecords.count());
+            System.out.println("NoRecords are " + noRecordsCount);
         }
         System.out.println("DONE");
         consumerHotel.close();
