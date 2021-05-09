@@ -3,9 +3,7 @@ package by.sanko.joiner.main;
 import by.sanko.joiner.entity.HotelData;
 import by.sanko.joiner.parser.HotelParser;
 import by.sanko.joiner.parser.WeatherParser;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import javafx.util.Pair;
+
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
