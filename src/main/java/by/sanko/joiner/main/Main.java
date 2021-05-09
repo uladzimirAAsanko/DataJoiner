@@ -1,6 +1,7 @@
 package by.sanko.joiner.main;
 
 import by.sanko.joiner.entity.HotelData;
+import by.sanko.joiner.entity.WeatherData;
 import by.sanko.joiner.parser.HotelParser;
 import by.sanko.joiner.parser.WeatherParser;
 
@@ -33,24 +34,20 @@ public class Main {
         consumerWeather.poll(0);
         consumerWeather.seekToBeginning(consumerWeather.assignment());
         System.out.println("Started to read weather data from topic " + SUBSCRIBE_TOPIC_WEATHER);
-        AtomicInteger i = new AtomicInteger();
+        List<WeatherData> list = new ArrayList<>();
         while (true) {
             final ConsumerRecords<String, String> consumerRecords = consumerWeather.poll(1000);
             if (consumerRecords.count() == 0) {
                 break;
             }
             consumerRecords.forEach(record -> {
-                if(i.get() % 1000 == 0){
-                    System.out.println(i.get() + "th record is :");
-                    System.out.println(WeatherParser.parseData(record.value()).toString());
-                }
-                i.getAndIncrement();
+                list.add(WeatherParser.parseData(record.value()));
             });
             consumerWeather.commitAsync();
         }
         consumerWeather.close();
         System.out.println("DONE");
-        System.out.println("All rows are " + i);
+        System.out.println("All rows are " + list.size());
 
     }
 
