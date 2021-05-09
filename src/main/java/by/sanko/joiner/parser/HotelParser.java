@@ -18,7 +18,7 @@ public class HotelParser {
             String tmp = residue.substring(0, indexOfComma);
             System.out.println(tmp);
             list.add(residue.substring(0, indexOfComma));
-            residue = data.substring(indexOfComma + 1);
+            residue = residue.substring(indexOfComma + 1);
         }
         System.out.println(residue);
         list.add(residue);
