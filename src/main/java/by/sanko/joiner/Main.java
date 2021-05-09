@@ -31,13 +31,7 @@ public class Main {
         while (true) {
             final ConsumerRecords<String, String> consumerRecords = consumerHotel.poll(1000);
             if (consumerRecords.count() == 0) {
-                noRecordsCount++;
-                if (noRecordsCount > giveUp) {
-                    break;
-                }
-                else {
-                    continue;
-                }
+                break;
             }
             consumerRecords.forEach(record -> {
                 String value = record.value();
