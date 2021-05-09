@@ -29,8 +29,9 @@ public class HotelParser {
         String address = list.get(4);
         double lng = 0;
         String geoHash = list.get(7);
-        double lat = Double.parseDouble(list.get(6));
+        double lat = 0;
         try {
+            lat = Double.parseDouble(list.get(6));
             lng = Double.parseDouble(list.get(5));
         }catch (NumberFormatException e){
             geoHash = data.substring(data.lastIndexOf(comma) + 1);
