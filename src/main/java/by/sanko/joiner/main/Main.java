@@ -34,7 +34,7 @@ public class Main {
         consumerWeather.poll(0);
         consumerWeather.seekToBeginning(consumerWeather.assignment());
         System.out.println("Started to read weather data from topic " + SUBSCRIBE_TOPIC_WEATHER);
-        List<WeatherData> list = new ArrayList<>();
+        Set<WeatherData> list = new HashSet<>();
         while (true) {
             final ConsumerRecords<String, String> consumerRecords = consumerWeather.poll(1000);
             if (consumerRecords.count() == 0) {
