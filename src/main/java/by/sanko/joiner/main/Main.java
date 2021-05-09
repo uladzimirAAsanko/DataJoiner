@@ -29,7 +29,6 @@ public class Main {
     static Consumer<String, String> consumerHotel = null;
     static Consumer<String, String> consumerWeather = null;
     static Producer<String, String> producer = null;
-    private static Multimap<Date,HashMap<String, Pair<Double, Integer>>> multimap = ArrayListMultimap.create();
 
     public static void main(String[] args) {
         init();
