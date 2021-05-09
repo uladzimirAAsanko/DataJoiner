@@ -50,7 +50,7 @@ public class Main {
 
             consumerHotel.commitAsync();
             System.out.println("All rows are " + hotels.size());
-            System.out.println("Counts are" + noRecordsCount);
+            System.out.println("Counts are " + consumerRecords.count());
         }
         System.out.println("All rows are " + hotels.size());
         System.out.println("First row is " + hotels.get(0));
