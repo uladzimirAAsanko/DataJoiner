@@ -1,5 +1,7 @@
-package by.sanko.joiner;
+package by.sanko.joiner.main;
 
+import by.sanko.joiner.entity.HotelData;
+import by.sanko.joiner.parser.HotelParser;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -22,9 +24,6 @@ public class Main {
 
     public static void main(String[] args) {
         init();
-        char comma = ',';
-        final int giveUp = 100;
-        int noRecordsCount = 0;
         List<String> hotels = new ArrayList<>();
         consumerHotel.poll(0);
         consumerHotel.seekToBeginning(consumerHotel.assignment());
@@ -38,16 +37,20 @@ public class Main {
                 int index = value.indexOf('\n');
                 hotels.add(value.substring(index + 1, value.indexOf('\n', index +1)));
             });
-
             consumerHotel.commitAsync();
             System.out.println("All rows are " + hotels.size());
-            System.out.println("NoRecords are " + noRecordsCount);
         }
         System.out.println("DONE");
         consumerHotel.close();
         System.out.println("All rows are " + hotels.size());
         System.out.println("First row is " + hotels.get(0));
         System.out.println("Last row is " + hotels.get(hotels.size() - 1));
+        List<HotelData> hotelData = new ArrayList<>();
+        for(String hotel : hotels){
+            HotelData data = HotelParser.parseData(hotel);
+            hotelData.add(data);
+            System.out.println(data.toString());
+        }
     }
 
     private static void init(){
