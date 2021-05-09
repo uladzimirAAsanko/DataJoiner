@@ -10,10 +10,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class Main {
     private static final String CONNECTION = "host.docker.internal:9094";
@@ -28,7 +25,7 @@ public class Main {
         char comma = ',';
         final int giveUp = 100;
         int noRecordsCount = 0;
-        List<String> hotels = new ArrayList();
+        Set<String> hotels = new HashSet<>();
         while (true) {
             consumerHotel.poll(0);
 
@@ -52,9 +49,9 @@ public class Main {
             System.out.println("All rows are " + hotels.size());
             System.out.println("Counts are " + consumerRecords.count());
         }
+        consumerHotel.close();
+        System.out.println("DONE");
         System.out.println("All rows are " + hotels.size());
-        System.out.println("First row is " + hotels.get(0));
-        System.out.println("Last row is " + hotels.get(hotels.size()));
     }
 
     private static void init(){
