@@ -21,7 +21,7 @@ public class Main {
     private static final String CONNECTION = "host.docker.internal:9094";
     private static final String CONSUMER_GROUP = "KafkaExampleConsumer";
     private static final String SUBSCRIBE_TOPIC_HOTEL = "hw-data-topic";
-    private static final String SUBSCRIBE_TOPIC_WEATHER = "weather-data-hash";
+    private static final String SUBSCRIBE_TOPIC_WEATHER = "weathers-data-hash";
     private static final String OUTPUT_TOPIC = "weather-data-hash";
 
     static Consumer<String, String> consumerHotel = null;
@@ -41,7 +41,7 @@ public class Main {
             }
             consumerRecords.forEach(record -> {
                 if(i.get() % 1000 == 0){
-                    System.out.println(i.get()/1000 + "th record is :");
+                    System.out.println(i.get() + "th record is :");
                     System.out.println(WeatherParser.parseData(record.value()).toString());
                 }
                 i.getAndIncrement();
