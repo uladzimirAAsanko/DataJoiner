@@ -45,6 +45,8 @@ public class Main {
         System.out.println("DONE");
         consumerHotel.close();
         System.out.println("All rows are " + hotels.size());
+        System.out.println("First row is " + hotels.get(0));
+        System.out.println("Last row is " + hotels.get(hotels.size() - 1));
     }
 
     private static void init(){
