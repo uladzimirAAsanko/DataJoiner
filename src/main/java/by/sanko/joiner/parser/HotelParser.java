@@ -16,11 +16,9 @@ public class HotelParser {
         for(int i = 0; i < 6; i++){
             indexOfComma = residue.indexOf(comma);
             String tmp = residue.substring(0, indexOfComma);
-            System.out.println(tmp);
             list.add(residue.substring(0, indexOfComma));
             residue = residue.substring(indexOfComma + 1);
         }
-        System.out.println(residue);
         list.add(residue);
         long id = Long.parseLong(list.get(0));
         String name = list.get(1);
@@ -35,16 +33,12 @@ public class HotelParser {
             lng = Double.parseDouble(list.get(5));
         }catch (NumberFormatException e){
             geoHash = data.substring(data.lastIndexOf(comma) + 1);
-            System.out.println(geoHash);
             data = data.substring(0, data.lastIndexOf(comma));
             lat = Double.parseDouble(data.substring(data.lastIndexOf(comma) + 1));
-            System.out.println(lat);
             data = data.substring(0, data.lastIndexOf(comma));
             lng = Double.parseDouble(data.substring(data.lastIndexOf(comma) + 1));
-            System.out.println(lng);
             data = data.substring(0, data.lastIndexOf(comma));
             address = address + data.substring(data.lastIndexOf(comma) + 1);
-            System.out.println(address);
         }
         return new HotelData(id, name, country, city ,address, lng, lat, geoHash);
     }
