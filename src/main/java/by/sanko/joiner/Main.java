@@ -49,6 +49,7 @@ public class Main {
             });
 
             consumerHotel.commitAsync();
+            System.out.println("All rows are " + hotels.size());
         }
         System.out.println("All rows are " + hotels.size());
         System.out.println("First row is " + hotels.get(0));
