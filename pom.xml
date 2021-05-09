@@ -24,17 +24,7 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <fork>true</fork>
-                    <meminitial>1024m</meminitial>
-                    <maxmem>10024m</maxmem>
-                </configuration>
-            </plugin>
-        </plugins>
+
     </build>
 
 </project>
