@@ -9,17 +9,7 @@ public class HotelParser {
     private static final char comma = ',';
 
     public static HotelData parseData(String data){
-        List<String> list = new ArrayList<>();
-        int indexOfComma = data.indexOf(comma);
-        list.add(data.substring(0, indexOfComma));
-        String residue = data.substring(indexOfComma + 1);
-        for(int i = 0; i < 6; i++){
-            indexOfComma = residue.indexOf(comma);
-            String tmp = residue.substring(0, indexOfComma);
-            list.add(residue.substring(0, indexOfComma));
-            residue = residue.substring(indexOfComma + 1);
-        }
-        list.add(residue);
+        List<String> list = Parser.parse(data, 8);
         long id = Long.parseLong(list.get(0));
         String name = list.get(1);
         String country = list.get(2);
