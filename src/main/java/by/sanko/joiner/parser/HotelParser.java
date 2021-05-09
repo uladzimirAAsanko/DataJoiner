@@ -14,17 +14,19 @@ public class HotelParser {
         list.add(data.substring(0, indexOfComma));
         for(int i = 0; i < 6; i++){
             int indexOf2nd = data.indexOf(indexOfComma + 1, comma);
-            list.add(data.substring(indexOfComma +1, indexOf2nd));
+            String tmp = data.substring(indexOfComma +1, indexOf2nd);
+            System.out.println(tmp);
+            list.add(tmp);
             indexOfComma = indexOf2nd;
         }
         list.add(data.substring(indexOfComma + 1));
-        Long id = Long.parseLong(list.get(0));
+        long id = Long.parseLong(list.get(0));
         String name = list.get(1);
         String country = list.get(2);
         String city = list.get(3);
         String address = list.get(4);
-        Double lng = Double.parseDouble(list.get(5));
-        Double lat = Double.parseDouble(list.get(6));
+        double lng = Double.parseDouble(list.get(5));
+        double lat = Double.parseDouble(list.get(6));
         String geoHash = list.get(7);
         return new HotelData(id, name, country, city ,address, lng, lat, geoHash);
     }
