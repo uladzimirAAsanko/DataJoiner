@@ -12,14 +12,16 @@ public class HotelParser {
         List<String> list = new ArrayList<>();
         int indexOfComma = data.indexOf(comma);
         list.add(data.substring(0, indexOfComma));
+        String residue = data.substring(indexOfComma + 1);
         for(int i = 0; i < 6; i++){
-            int indexOf2nd = data.indexOf(indexOfComma + 1, comma);
-            String tmp = data.substring(indexOfComma +1, indexOf2nd);
+            indexOfComma = residue.indexOf(comma);
+            String tmp = residue.substring(0, indexOfComma);
             System.out.println(tmp);
-            list.add(tmp);
-            indexOfComma = indexOf2nd;
+            list.add(residue.substring(0, indexOfComma));
+            residue = data.substring(indexOfComma + 1);
         }
-        list.add(data.substring(indexOfComma + 1));
+        System.out.println(residue);
+        list.add(residue);
         long id = Long.parseLong(list.get(0));
         String name = list.get(1);
         String country = list.get(2);
