@@ -2,6 +2,7 @@ package by.sanko.joiner.main;
 
 import by.sanko.joiner.entity.HotelData;
 import by.sanko.joiner.entity.WeatherData;
+import by.sanko.joiner.generator.Generator;
 import by.sanko.joiner.parser.HotelParser;
 import by.sanko.joiner.parser.WeatherParser;
 
@@ -109,7 +110,11 @@ public class Main {
 
         for (HotelData hotelData : hotels){
             for(Date date : dateList){
-                Pair<Double, Integer> pair = listOfMaps.get(date).get(hotelData.getGeoHash());
+                String hash = Generator.generateGeoHash(hotelData.getLatitude(),hotelData.getLongitude());
+                Pair<Double, Integer> pair = listOfMaps.get(date).get(hash);
+                if(!hash.equals(hotelData.getGeoHash())){
+                    System.out.println("They are not equals " + hotelData.getName());
+                }
                 if(pair.getRight() != 0){
                     System.out.println(hotelData.getName() + "  " + date + "   " + pair.getLeft() + "   " + pair.getRight());
                 }
