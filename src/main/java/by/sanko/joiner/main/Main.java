@@ -44,7 +44,7 @@ public class Main {
         for(HotelData hotel : hotels){
             geoHashes.add(hotel.getGeoHash());
         }
-        Multimap<Date,HashMap<String, Pair<Double, Integer>>> listOfMaps =  ArrayListMultimap.create();
+        HashMap<Date,HashMap<String, Pair<Double, Integer>>> listOfMaps =  new HashMap<>();
         for(int i = 1; i < 32; i++){
             Date date = new SimpleDateFormat("yyyy-M-d").parse("2016-10-"+i);
             HashMap<String, Pair<Double, Integer>> map = new HashMap<>();
@@ -85,7 +85,7 @@ public class Main {
                 String value = record.value();
                 WeatherData data = WeatherParser.parseData(value);
                 System.out.println(data.toString());
-                HashMap<String, Pair<Double, Integer>> map = (HashMap<String, Pair<Double, Integer>>) listOfMaps.get(data.getWeatherDate());
+                HashMap<String, Pair<Double, Integer>> map =  listOfMaps.get(data.getWeatherDate());
                 Pair<Double,Integer> pair = map.get(data.getGeoHash());
                 Double avg_temp = (Double) pair.getLeft();
                 Integer count = (Integer) pair.getRight();
