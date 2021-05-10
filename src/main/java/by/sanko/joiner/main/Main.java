@@ -43,13 +43,13 @@ public class Main {
         HashSet<String> geoHashes = new HashSet<>();
         for(HotelData hotel : hotels){
             geoHashes.add(hotel.getGeoHash());
-            System.out.println(hotel.getGeoHash());
         }
         HashMap<Date,HashMap<String, Pair<Double, Integer>>> listOfMaps =  new HashMap<>();
         for(int i = 1; i < 32; i++){
             Date date = new SimpleDateFormat("yyyy-M-d").parse("2016-10-"+i);
             HashMap<String, Pair<Double, Integer>> map = new HashMap<>();
             for(String geoHash : geoHashes){
+                System.out.println("Adding hash " + geoHash);
                 map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
             }
             listOfMaps.put(date,map);
