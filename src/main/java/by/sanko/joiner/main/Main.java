@@ -30,12 +30,13 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
+    private static final char comma = ',';
     private static final String CONNECTION = "host.docker.internal:9094";
     private static final String CONSUMER_GROUP = "KafkaExampleConsumer";
     private static final String SUBSCRIBE_TOPIC_HOTEL = "hw-data-topic";
     private static final String SUBSCRIBE_TOPIC_WEATHER = "weathers-data-hash";
     private static final String OUTPUT_TOPIC = "weather-data-hash";
-
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d");
     static Consumer<String, String> consumerHotel = null;
     static Consumer<String, String> consumerWeather = null;
     static Producer<String, String> producer = null;
@@ -46,7 +47,7 @@ public class Main {
         ArrayList<Date> dateList = new ArrayList<>();
         HashMap<Date,HashMap<String, Pair<Double, Integer>>> listOfMaps =  new HashMap<>();
         for(int i = 1; i < 32; i++){
-            Date date = new SimpleDateFormat("yyyy-M-d").parse("2016-10-"+i);
+            Date date = dateFormat.parse("2016-10-"+i);
             dateList.add(date);
             HashMap<String, Pair<Double, Integer>> map = new HashMap<>();
             listOfMaps.put(date,map);
@@ -100,7 +101,13 @@ public class Main {
                 String hash = Generator.generateGeoHash(hotelData.getLongitude(), hotelData.getLatitude());
                 Pair<Double, Integer> pair = listOfMaps.get(date).get(hash);
                 if(pair != null && pair.getRight() != 0){
-                    System.out.println(hotelData.getName() + "  " + date + "   " + decimalFormat.format(pair.getLeft()) + "   " + pair.getRight());
+                    Double avgTemp = pair.getLeft() / pair.getRight();
+                    StringBuilder builder = new StringBuilder();
+                    builder.append(hotelData.getId()).append(comma).append(hotelData.getName()).append(comma);
+                    builder.append(hotelData.getCountry()).append(comma).append(hotelData.getCity()).append(comma);
+                    builder.append(hotelData.getAddress()).append(comma).append(dateFormat.format(date)).append(comma);
+                    builder.append(avgTemp);
+                    System.out.println(builder.toString());
                 }
             }
         }
