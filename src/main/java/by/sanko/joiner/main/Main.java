@@ -43,19 +43,12 @@ public class Main {
     public static void main(String[] args) throws ParseException {
         init();
         List<HotelData> hotels = readHotels();
-        HashSet<String> geoHashes = new HashSet<>();
-        for(HotelData hotel : hotels){
-            geoHashes.add(hotel.getGeoHash());
-        }
         ArrayList<Date> dateList = new ArrayList<>();
         HashMap<Date,HashMap<String, Pair<Double, Integer>>> listOfMaps =  new HashMap<>();
         for(int i = 1; i < 32; i++){
             Date date = new SimpleDateFormat("yyyy-M-d").parse("2016-10-"+i);
             dateList.add(date);
             HashMap<String, Pair<Double, Integer>> map = new HashMap<>();
-            for(String geoHash : geoHashes){
-                map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
-            }
             listOfMaps.put(date,map);
         }
 
@@ -63,10 +56,6 @@ public class Main {
             Date date = new SimpleDateFormat("yyyy-M-d").parse("2017-09-"+i);
             dateList.add(date);
             HashMap<String, Pair<Double, Integer>> map = new HashMap<>();
-            for(String geoHash : geoHashes){
-                map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
-            }
-
             listOfMaps.put(date,map);
         }
 
@@ -74,9 +63,6 @@ public class Main {
             Date date = new SimpleDateFormat("yyyy-M-d").parse("2017-08-"+i);
             dateList.add(date);
             HashMap<String, Pair<Double, Integer>> map = new HashMap<>();
-            for(String geoHash : geoHashes){
-                map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
-            }
             listOfMaps.put(date,map);
         }
         consumerWeather.poll(0);
