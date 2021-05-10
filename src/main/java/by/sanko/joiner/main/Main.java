@@ -6,10 +6,6 @@ import by.sanko.joiner.generator.Generator;
 import by.sanko.joiner.parser.HotelParser;
 import by.sanko.joiner.parser.WeatherParser;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
-import com.google.common.collect.Multimaps;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -19,15 +15,14 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.checkerframework.checker.units.qual.A;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
     private static final char comma = ',';
@@ -35,7 +30,7 @@ public class Main {
     private static final String CONSUMER_GROUP = "KafkaExampleConsumer";
     private static final String SUBSCRIBE_TOPIC_HOTEL = "hw-data-topic";
     private static final String SUBSCRIBE_TOPIC_WEATHER = "weathers-data-hash";
-    private static final String OUTPUT_TOPIC = "weather-data-hash";
+    private static final String OUTPUT_TOPIC = "hotel-and-weather";
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d");
     static Consumer<String, String> consumerHotel = null;
     static Consumer<String, String> consumerWeather = null;
@@ -107,7 +102,7 @@ public class Main {
                     builder.append(hotelData.getCountry()).append(comma).append(hotelData.getCity()).append(comma);
                     builder.append(hotelData.getAddress()).append(comma).append(dateFormat.format(date)).append(comma);
                     builder.append(decimalFormat.format(avgTemp));
-                    System.out.println(builder.toString());
+                    send(builder.toString());
                 }
             }
         }
@@ -154,7 +149,6 @@ public class Main {
                 hotels.add(value.substring(index + 1, value.indexOf('\n', index +1)));
             });
             consumerHotel.commitAsync();
-            System.out.println("All rows are " + hotels.size());
         }
         System.out.println("DONE");
         consumerHotel.close();
@@ -168,5 +162,10 @@ public class Main {
         }
         System.out.println("All hotels count " + hotelData.size());
         return hotelData;
+    }
+
+    private static void send( String value) {
+        ProducerRecord<String, String> record = new ProducerRecord<>(OUTPUT_TOPIC, value);
+        producer.send(record);
     }
 }
