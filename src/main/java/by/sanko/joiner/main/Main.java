@@ -113,7 +113,7 @@ public class Main {
                 String hash = Generator.generateGeoHash(hotelData.getLongitude(), hotelData.getLatitude());
                 Pair<Double, Integer> pair = listOfMaps.get(date).get(hash);
                 if(pair != null && pair.getRight() != 0){
-                    System.out.println(hotelData.getName() + "  " + date + "   " + pair.getLeft() + "   " + pair.getRight());
+                    System.out.println(hotelData.getName() + "  " + date + "   " +Math.ceil(pair.getLeft()) + "   " + pair.getRight());
                 }
             }
         }
