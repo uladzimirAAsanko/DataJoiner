@@ -49,9 +49,9 @@ public class Main {
             Date date = new SimpleDateFormat("yyyy-M-d").parse("2016-10-"+i);
             HashMap<String, Pair<Double, Integer>> map = new HashMap<>();
             for(String geoHash : geoHashes){
-                System.out.println("Adding hash " + geoHash);
                 map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
             }
+            System.out.println("Size of map" + map.size());
             listOfMaps.put(date,map);
         }
 
@@ -61,6 +61,7 @@ public class Main {
             for(String geoHash : geoHashes){
                 map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
             }
+            System.out.println("Size of map" + map.size());
             listOfMaps.put(date,map);
         }
 
@@ -70,6 +71,7 @@ public class Main {
             for(String geoHash : geoHashes){
                 map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
             }
+            System.out.println("Size of map" + map.size());
             listOfMaps.put(date,map);
         }
         consumerWeather.poll(0);
@@ -87,6 +89,7 @@ public class Main {
                 HashMap<String, Pair<Double, Integer>> map =  listOfMaps.get(data.getWeatherDate());
                 System.out.println("List of keys");
                 System.out.println(map.keySet());
+                System.out.println("Size of map" + map.size());
                 Pair<Double,Integer> pair = map.get(data.getGeoHash());
                 if(pair != null) {
                     Double avg_temp = (Double) pair.getLeft();
