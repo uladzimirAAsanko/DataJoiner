@@ -91,6 +91,7 @@ public class Main {
         consumerWeather.close();
         System.out.println("DONE");
         DecimalFormat decimalFormat = new DecimalFormat( "##.##" );
+        System.out.println("Start to write data into " + OUTPUT_TOPIC);
         for (HotelData hotelData : hotels){
             for(Date date : dateList){
                 String hash = Generator.generateGeoHash(hotelData.getLongitude(), hotelData.getLatitude());
@@ -106,8 +107,7 @@ public class Main {
                 }
             }
         }
-
-
+        System.out.println("DONE");
     }
 
     private static void init(){
