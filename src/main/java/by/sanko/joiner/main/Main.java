@@ -87,14 +87,16 @@ public class Main {
                 System.out.println(data.toString());
                 HashMap<String, Pair<Double, Integer>> map =  listOfMaps.get(data.getWeatherDate());
                 Pair<Double,Integer> pair = map.get(data.getGeoHash());
-                Double avg_temp = (Double) pair.getLeft();
-                Integer count = (Integer) pair.getRight();
-                System.out.println("Old value are " + avg_temp + "  " + count);
-                count += 1;
-                avg_temp += data.getAvgTemprC();
-                Pair<Double,Integer> changed = new MutablePair<Double,Integer>(avg_temp,count);
-                System.out.println("New value are " + avg_temp + "  " + count);
-                map.replace(data.getGeoHash(), pair, changed);
+                if(pair != null) {
+                    Double avg_temp = (Double) pair.getLeft();
+                    Integer count = (Integer) pair.getRight();
+                    System.out.println("Old value are " + avg_temp + "  " + count);
+                    count += 1;
+                    avg_temp += data.getAvgTemprC();
+                    Pair<Double, Integer> changed = new MutablePair<Double, Integer>(avg_temp, count);
+                    System.out.println("New value are " + avg_temp + "  " + count);
+                    map.replace(data.getGeoHash(), pair, changed);
+                }
             });
             consumerWeather.commitAsync();
         }
