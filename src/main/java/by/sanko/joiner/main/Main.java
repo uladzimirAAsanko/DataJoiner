@@ -20,6 +20,7 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.checkerframework.checker.units.qual.A;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,9 +45,11 @@ public class Main {
         for(HotelData hotel : hotels){
             geoHashes.add(hotel.getGeoHash());
         }
+        ArrayList<Date> dateList = new ArrayList<>();
         HashMap<Date,HashMap<String, Pair<Double, Integer>>> listOfMaps =  new HashMap<>();
         for(int i = 1; i < 32; i++){
             Date date = new SimpleDateFormat("yyyy-M-d").parse("2016-10-"+i);
+            dateList.add(date);
             HashMap<String, Pair<Double, Integer>> map = new HashMap<>();
             for(String geoHash : geoHashes){
                 map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
@@ -56,15 +59,18 @@ public class Main {
 
         for(int i = 1; i < 31; i++){
             Date date = new SimpleDateFormat("yyyy-M-d").parse("2017-09-"+i);
+            dateList.add(date);
             HashMap<String, Pair<Double, Integer>> map = new HashMap<>();
             for(String geoHash : geoHashes){
                 map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
             }
+
             listOfMaps.put(date,map);
         }
 
         for(int i = 1; i < 32; i++){
             Date date = new SimpleDateFormat("yyyy-M-d").parse("2017-08-"+i);
+            dateList.add(date);
             HashMap<String, Pair<Double, Integer>> map = new HashMap<>();
             for(String geoHash : geoHashes){
                 map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
@@ -85,14 +91,11 @@ public class Main {
                 HashMap<String, Pair<Double, Integer>> map =  listOfMaps.get(data.getWeatherDate());
                 Pair<Double,Integer> pair = map.get(data.getGeoHash());
                 if(pair != null) {
-                    System.out.println(data.toString());
                     Double avg_temp = (Double) pair.getLeft();
                     Integer count = (Integer) pair.getRight();
-                    System.out.println("Old value are " + avg_temp + "  " + count);
                     count += 1;
                     avg_temp += data.getAvgTemprC();
                     Pair<Double, Integer> changed = new MutablePair<Double, Integer>(avg_temp, count);
-                    System.out.println("New value are " + avg_temp + "  " + count);
                     map.replace(data.getGeoHash(), pair, changed);
                 }else{
                     Pair<Double, Integer> changed = new MutablePair<Double, Integer>(data.getAvgTemprC(), 1);
@@ -103,6 +106,15 @@ public class Main {
         }
         consumerWeather.close();
         System.out.println("DONE");
+
+        for (HotelData hotelData : hotels){
+            for(Date date : dateList){
+                Pair<Double, Integer> pair = listOfMaps.get(date).get(hotelData.getGeoHash());
+                if(pair.getRight() != 0){
+                    System.out.println(hotelData.getName() + "  " + date + "   " + pair.getLeft() + "   " + pair.getRight());
+                }
+            }
+        }
 
 
     }
