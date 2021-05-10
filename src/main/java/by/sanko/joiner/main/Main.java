@@ -85,6 +85,7 @@ public class Main {
                 WeatherData data = WeatherParser.parseData(value);
                 System.out.println(data.toString());
                 HashMap<String, Pair<Double, Integer>> map =  listOfMaps.get(data.getWeatherDate());
+                System.out.println("List of keys");
                 System.out.println(map.keySet());
                 Pair<Double,Integer> pair = map.get(data.getGeoHash());
                 if(pair != null) {
