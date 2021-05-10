@@ -115,7 +115,7 @@ public class Main {
                 if(!hash.equals(hotelData.getGeoHash())){
                     System.out.println("They are not equals " + hotelData.getName());
                 }
-                if(pair.getRight() != 0){
+                if(pair != null && pair.getRight() != 0){
                     System.out.println(hotelData.getName() + "  " + date + "   " + pair.getLeft() + "   " + pair.getRight());
                 }
             }
