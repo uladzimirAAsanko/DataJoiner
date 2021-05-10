@@ -43,6 +43,7 @@ public class Main {
         HashSet<String> geoHashes = new HashSet<>();
         for(HotelData hotel : hotels){
             geoHashes.add(hotel.getGeoHash());
+            System.out.println(hotel.getGeoHash());
         }
         HashMap<Date,HashMap<String, Pair<Double, Integer>>> listOfMaps =  new HashMap<>();
         for(int i = 1; i < 32; i++){
@@ -71,8 +72,6 @@ public class Main {
             }
             listOfMaps.put(date,map);
         }
-
-
         consumerWeather.poll(0);
         consumerWeather.seekToBeginning(consumerWeather.assignment());
         System.out.println("Started to read weather data from topic " + SUBSCRIBE_TOPIC_WEATHER);
