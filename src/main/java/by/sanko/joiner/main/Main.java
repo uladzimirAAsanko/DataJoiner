@@ -51,6 +51,9 @@ public class Main {
             for(String geoHash : geoHashes){
                 map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
             }
+            for(String key: map.keySet()){
+                System.out.println(map.get(key));
+            }
             listOfMaps.put(date,map);
         }
 
