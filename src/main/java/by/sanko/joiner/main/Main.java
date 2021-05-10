@@ -110,7 +110,7 @@ public class Main {
 
         for (HotelData hotelData : hotels){
             for(Date date : dateList){
-                String hash = Generator.generateGeoHash(hotelData.getLatitude(),hotelData.getLongitude());
+                String hash = Generator.generateGeoHash(hotelData.getLongitude(), hotelData.getLatitude());
                 Pair<Double, Integer> pair = listOfMaps.get(date).get(hash);
                 if(!hash.equals(hotelData.getGeoHash())){
                     System.out.println("They are not equals " + hotelData.getName());
