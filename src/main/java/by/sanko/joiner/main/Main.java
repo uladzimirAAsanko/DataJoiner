@@ -23,6 +23,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.checkerframework.checker.units.qual.A;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -107,13 +108,13 @@ public class Main {
         }
         consumerWeather.close();
         System.out.println("DONE");
-
+        DecimalFormat decimalFormat = new DecimalFormat( "##.###" );
         for (HotelData hotelData : hotels){
             for(Date date : dateList){
                 String hash = Generator.generateGeoHash(hotelData.getLongitude(), hotelData.getLatitude());
                 Pair<Double, Integer> pair = listOfMaps.get(date).get(hash);
                 if(pair != null && pair.getRight() != 0){
-                    System.out.println(hotelData.getName() + "  " + date + "   " +Math.ceil(pair.getLeft()) + "   " + pair.getRight());
+                    System.out.println(hotelData.getName() + "  " + date + "   " + decimalFormat.format(pair.getLeft()) + "   " + pair.getRight());
                 }
             }
         }
