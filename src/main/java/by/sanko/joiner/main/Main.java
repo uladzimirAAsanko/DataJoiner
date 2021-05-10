@@ -140,7 +140,7 @@ public class Main {
                 String value = record.value();
                 int index = value.indexOf('\n');
                 System.out.println(value);
-                hotels.add(value.substring(index + 1, value.indexOf('\n', index +1)));
+                hotels.add(value);
             });
             consumerHotel.commitAsync();
             System.out.println("All rows are " + hotels.size());
