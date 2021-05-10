@@ -82,10 +82,10 @@ public class Main {
             consumerRecords.forEach(record -> {
                 String value = record.value();
                 WeatherData data = WeatherParser.parseData(value);
-                System.out.println(data.toString());
                 HashMap<String, Pair<Double, Integer>> map =  listOfMaps.get(data.getWeatherDate());
                 Pair<Double,Integer> pair = map.get(data.getGeoHash());
                 if(pair != null) {
+                    System.out.println(data.toString());
                     Double avg_temp = (Double) pair.getLeft();
                     Integer count = (Integer) pair.getRight();
                     System.out.println("Old value are " + avg_temp + "  " + count);
@@ -100,6 +100,7 @@ public class Main {
         }
         consumerWeather.close();
         System.out.println("DONE");
+
 
     }
 
