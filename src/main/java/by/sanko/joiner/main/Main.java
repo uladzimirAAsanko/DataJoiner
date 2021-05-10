@@ -51,9 +51,6 @@ public class Main {
             for(String geoHash : geoHashes){
                 map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
             }
-            System.out.println("Size of keys");
-            System.out.println(map.keySet().size());
-            System.out.println("Size of map is " + map.size());
             listOfMaps.put(date,map);
         }
 
@@ -63,9 +60,6 @@ public class Main {
             for(String geoHash : geoHashes){
                 map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
             }
-            System.out.println("Size of keys");
-            System.out.println(map.keySet().size());
-            System.out.println("Size of map is " + map.size());
             listOfMaps.put(date,map);
         }
 
@@ -75,9 +69,6 @@ public class Main {
             for(String geoHash : geoHashes){
                 map.put(geoHash, new MutablePair<Double, Integer>(0.0, 0));
             }
-            System.out.println("Size of keys");
-            System.out.println(map.keySet().size());
-            System.out.println("Size of map is " + map.size());
             listOfMaps.put(date,map);
         }
         consumerWeather.poll(0);
@@ -93,9 +84,6 @@ public class Main {
                 WeatherData data = WeatherParser.parseData(value);
                 System.out.println(data.toString());
                 HashMap<String, Pair<Double, Integer>> map =  listOfMaps.get(data.getWeatherDate());
-                System.out.println("Size of keys");
-                System.out.println(map.keySet().size());
-                System.out.println("Size of map is " + map.size());
                 Pair<Double,Integer> pair = map.get(data.getGeoHash());
                 if(pair != null) {
                     Double avg_temp = (Double) pair.getLeft();
