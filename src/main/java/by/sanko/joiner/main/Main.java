@@ -95,7 +95,7 @@ public class Main {
         }
         consumerWeather.close();
         System.out.println("DONE");
-        DecimalFormat decimalFormat = new DecimalFormat( "##.###" );
+        DecimalFormat decimalFormat = new DecimalFormat( "##.##" );
         for (HotelData hotelData : hotels){
             for(Date date : dateList){
                 String hash = Generator.generateGeoHash(hotelData.getLongitude(), hotelData.getLatitude());
@@ -106,7 +106,7 @@ public class Main {
                     builder.append(hotelData.getId()).append(comma).append(hotelData.getName()).append(comma);
                     builder.append(hotelData.getCountry()).append(comma).append(hotelData.getCity()).append(comma);
                     builder.append(hotelData.getAddress()).append(comma).append(dateFormat.format(date)).append(comma);
-                    builder.append(avgTemp);
+                    builder.append(decimalFormat.format(avgTemp));
                     System.out.println(builder.toString());
                 }
             }
