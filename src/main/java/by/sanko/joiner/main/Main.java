@@ -122,7 +122,7 @@ public class Main {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         consumerHotel = new KafkaConsumer<>(props);
         consumerWeather = new KafkaConsumer<>(props);
-        consumerHotel.subscribe(Collections.singletonList(SUBSCRIBE_TOPIC_WEATHER));
+        consumerHotel.subscribe(Collections.singletonList(SUBSCRIBE_TOPIC_HOTEL));
         consumerWeather.subscribe(Collections.singletonList(SUBSCRIBE_TOPIC_WEATHER));
     }
 
@@ -140,7 +140,7 @@ public class Main {
                 String value = record.value();
                 int index = value.indexOf('\n');
                 System.out.println(value);
-                hotels.add(value);
+                hotels.add(value.substring(index + 1, value.indexOf('\n', index +1)));
             });
             consumerHotel.commitAsync();
             System.out.println("All rows are " + hotels.size());
