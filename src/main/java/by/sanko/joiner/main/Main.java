@@ -19,6 +19,9 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,7 +39,7 @@ public class Main {
     static Consumer<String, String> consumerWeather = null;
     static Producer<String, String> producer = null;
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, IOException {
         init();
         List<HotelData> hotels = readHotels();
         ArrayList<Date> dateList = new ArrayList<>();
@@ -92,6 +95,7 @@ public class Main {
         System.out.println("DONE");
         DecimalFormat decimalFormat = new DecimalFormat( "##.##" );
         System.out.println("Start to write data into " + OUTPUT_TOPIC);
+        FileWriter csvWriter = new FileWriter("/home/uladzimir/conf/new.csv");
         for (HotelData hotelData : hotels){
             for(Date date : dateList){
                 String hash = Generator.generateGeoHash(hotelData.getLongitude(), hotelData.getLatitude());
@@ -102,11 +106,13 @@ public class Main {
                     builder.append(hotelData.getId()).append(comma).append(hotelData.getName()).append(comma);
                     builder.append(hotelData.getCountry()).append(comma).append(hotelData.getCity()).append(comma);
                     builder.append(hotelData.getAddress()).append(comma).append(dateFormat.format(date)).append(comma);
-                    builder.append(decimalFormat.format(avgTemp));
-                    send(builder.toString());
+                    builder.append(decimalFormat.format(avgTemp)).append('\n');
+                    csvWriter.append(builder.toString());
                 }
             }
         }
+        csvWriter.flush();
+        csvWriter.close();
         System.out.println("DONE");
     }
 
