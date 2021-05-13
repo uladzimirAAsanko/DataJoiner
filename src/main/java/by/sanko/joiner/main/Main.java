@@ -96,15 +96,14 @@ public class Main {
         DecimalFormat decimalFormat = new DecimalFormat( "##.##" );
         System.out.println("Start to write data into " + OUTPUT_TOPIC);
         FileWriter csvWriter = new FileWriter("/home/uladzimir/conf/new.csv");
-        for(Date date : dateList){
-            System.out.println(date);
-        }
+
         for (HotelData hotelData : hotels){
             for(Date date : dateList){
                 String hash = Generator.generateGeoHash(hotelData.getLongitude(), hotelData.getLatitude());
                 Pair<Double, Integer> pair = listOfMaps.get(date).get(hash);
                 if(pair != null && pair.getRight() != 0){
                     Double avgTemp = pair.getLeft() / pair.getRight();
+                    System.out.println(date);
                     StringBuilder builder = new StringBuilder();
                     builder.append(hotelData.getId()).append(comma).append(hotelData.getName()).append(comma);
                     builder.append(hotelData.getCountry()).append(comma).append(hotelData.getCity()).append(comma);
