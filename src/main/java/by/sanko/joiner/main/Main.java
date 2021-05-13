@@ -75,7 +75,9 @@ public class Main {
             consumerRecords.forEach(record -> {
                 String value = record.value();
                 WeatherData data = WeatherParser.parseData(value);
-                if(data.getWeatherDate().getYear() == 2016 || data.getWeatherDate().getMonth() == Calendar.AUGUST) {
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(data.getWeatherDate());
+                if(calendar.get(Calendar.YEAR) == 2016 || calendar.get(Calendar.MONTH) == Calendar.AUGUST) {
                     System.out.println(data.getWeatherDate());
                 }
                 HashMap<String, Pair<Double, Integer>> map =  listOfMaps.get(data.getWeatherDate());
@@ -106,7 +108,6 @@ public class Main {
                 Pair<Double, Integer> pair = listOfMaps.get(date).get(hash);
                 if(pair != null && pair.getRight() != 0){
                     Double avgTemp = pair.getLeft() / pair.getRight();
-                    System.out.println(date);
                     StringBuilder builder = new StringBuilder();
                     builder.append(hotelData.getId()).append(comma).append(hotelData.getName()).append(comma);
                     builder.append(hotelData.getCountry()).append(comma).append(hotelData.getCity()).append(comma);
