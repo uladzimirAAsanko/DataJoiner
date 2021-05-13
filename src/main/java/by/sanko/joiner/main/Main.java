@@ -75,6 +75,7 @@ public class Main {
             consumerRecords.forEach(record -> {
                 String value = record.value();
                 WeatherData data = WeatherParser.parseData(value);
+                System.out.println(data.getWeatherDate());
                 HashMap<String, Pair<Double, Integer>> map =  listOfMaps.get(data.getWeatherDate());
                 Pair<Double,Integer> pair = map.get(data.getGeoHash());
                 if(pair != null) {
