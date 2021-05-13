@@ -96,6 +96,9 @@ public class Main {
         DecimalFormat decimalFormat = new DecimalFormat( "##.##" );
         System.out.println("Start to write data into " + OUTPUT_TOPIC);
         FileWriter csvWriter = new FileWriter("/home/uladzimir/conf/new.csv");
+        for(Date date : dateList){
+            System.out.println(date);
+        }
         for (HotelData hotelData : hotels){
             for(Date date : dateList){
                 String hash = Generator.generateGeoHash(hotelData.getLongitude(), hotelData.getLatitude());
