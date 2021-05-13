@@ -77,9 +77,6 @@ public class Main {
                 WeatherData data = WeatherParser.parseData(value);
                 Calendar calendar = new GregorianCalendar();
                 calendar.setTime(data.getWeatherDate());
-                if( calendar.get(Calendar.MONTH) == Calendar.AUGUST) {
-                    System.out.println(data.getWeatherDate());
-                }
                 HashMap<String, Pair<Double, Integer>> map =  listOfMaps.get(data.getWeatherDate());
                 Pair<Double,Integer> pair = map.get(data.getGeoHash());
                 if(pair != null) {
