@@ -97,7 +97,6 @@ public class Main {
         System.out.println("DONE");
         DecimalFormat decimalFormat = new DecimalFormat( "##.##" );
         System.out.println("Start to write data into " + OUTPUT_TOPIC);
-        FileWriter csvWriter = new FileWriter("/home/uladzimir/conf/new.csv");
 
         for (HotelData hotelData : hotels){
             for(Date date : dateList){
@@ -110,12 +109,10 @@ public class Main {
                     builder.append(hotelData.getCountry()).append(comma).append(hotelData.getCity()).append(comma);
                     builder.append(hotelData.getAddress()).append(comma).append(dateFormat.format(date)).append(comma);
                     builder.append(decimalFormat.format(avgTemp)).append('\n');
-                    csvWriter.append(builder.toString());
+                    send(builder.toString());
                 }
             }
         }
-        csvWriter.flush();
-        csvWriter.close();
         System.out.println("DONE");
     }
 
