@@ -36,8 +36,10 @@ public class Main {
     private static final String OUTPUT_TOPIC = "hotel-and-weather";
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d");
     static Consumer<String, String> consumerHotel = null;
-    static Consumer<String, String> consumerWeather = null;
     static Producer<String, String> producer = null;
+    private static String YEAR_2016 = "weather-hash-2016-10";
+    private static String YEAR_2017_AUG = "weather-hash-2017-8";
+    private static String YEAR_2017_SEPT = "weather-hash-2017-9";
 
     public static void main(String[] args) throws ParseException, IOException {
         init();
@@ -64,37 +66,9 @@ public class Main {
             HashMap<String, Pair<Double, Integer>> map = new HashMap<>();
             listOfMaps.put(date,map);
         }
-        consumerWeather.poll(0);
-        consumerWeather.seekToBeginning(consumerWeather.assignment());
-        System.out.println("Started to read weather data from topic " + SUBSCRIBE_TOPIC_WEATHER);
-        while (true) {
-            final ConsumerRecords<String, String> consumerRecords = consumerWeather.poll(1000);
-            if (consumerRecords.count() == 0) {
-                break;
-            }
-            consumerRecords.forEach(record -> {
-                String value = record.value();
-                WeatherData data = WeatherParser.parseData(value);
-                Calendar calendar = new GregorianCalendar();
-                calendar.setTime(data.getWeatherDate());
-                HashMap<String, Pair<Double, Integer>> map =  listOfMaps.get(data.getWeatherDate());
-                Pair<Double,Integer> pair = map.get(data.getGeoHash());
-                if(pair != null) {
-                    Double avg_temp = (Double) pair.getLeft();
-                    Integer count = (Integer) pair.getRight();
-                    count += 1;
-                    avg_temp += data.getAvgTemprC();
-                    Pair<Double, Integer> changed = new MutablePair<Double, Integer>(avg_temp, count);
-                    map.replace(data.getGeoHash(), pair, changed);
-                }else{
-                    Pair<Double, Integer> changed = new MutablePair<Double, Integer>(data.getAvgTemprC(), 1);
-                    map.put(data.getGeoHash(), changed);
-                }
-            });
-            consumerWeather.commitAsync();
-        }
-        consumerWeather.close();
-        System.out.println("DONE");
+        readWeatherData(listOfMaps,YEAR_2016);
+        readWeatherData(listOfMaps,YEAR_2017_AUG);
+        readWeatherData(listOfMaps,YEAR_2017_SEPT);
         DecimalFormat decimalFormat = new DecimalFormat( "##.##" );
         System.out.println("Start to write data into " + OUTPUT_TOPIC);
 
@@ -134,9 +108,48 @@ public class Main {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         consumerHotel = new KafkaConsumer<>(props);
-        consumerWeather = new KafkaConsumer<>(props);
         consumerHotel.subscribe(Collections.singletonList(SUBSCRIBE_TOPIC_HOTEL));
-        consumerWeather.subscribe(Collections.singletonList(SUBSCRIBE_TOPIC_WEATHER));
+    }
+
+    private static void readWeatherData(HashMap<Date,HashMap<String, Pair<Double, Integer>>> listOfMaps, String topicName){
+        Properties props = new Properties();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, CONNECTION);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, CONSUMER_GROUP);
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        Consumer<String, String> consumer = new KafkaConsumer<>(props);
+        consumer.subscribe(Collections.singletonList(topicName));
+        consumer.poll(0);
+        consumer.seekToBeginning(consumer.assignment());
+        System.out.println("Started to read weather data from topic " + topicName);
+        while (true) {
+            final ConsumerRecords<String, String> consumerRecords = consumer.poll(1000);
+            if (consumerRecords.count() == 0) {
+                break;
+            }
+            consumerRecords.forEach(record -> {
+                String value = record.value();
+                WeatherData data = WeatherParser.parseData(value);
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(data.getWeatherDate());
+                HashMap<String, Pair<Double, Integer>> map =  listOfMaps.get(data.getWeatherDate());
+                Pair<Double,Integer> pair = map.get(data.getGeoHash());
+                if(pair != null) {
+                    Double avg_temp = (Double) pair.getLeft();
+                    Integer count = (Integer) pair.getRight();
+                    count += 1;
+                    avg_temp += data.getAvgTemprC();
+                    Pair<Double, Integer> changed = new MutablePair<Double, Integer>(avg_temp, count);
+                    map.replace(data.getGeoHash(), pair, changed);
+                }else{
+                    Pair<Double, Integer> changed = new MutablePair<Double, Integer>(data.getAvgTemprC(), 1);
+                    map.put(data.getGeoHash(), changed);
+                }
+            });
+            consumer.commitAsync();
+        }
+        consumer.close();
+        System.out.println("DONE");
     }
 
     private static List<HotelData> readHotels(){
