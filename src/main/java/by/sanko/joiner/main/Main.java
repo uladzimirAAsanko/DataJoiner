@@ -32,7 +32,7 @@ public class Main {
     private static final String CONNECTION = "host.docker.internal:9094";
     private static final String CONSUMER_GROUP = "KafkaExampleConsumer";
     private static final String SUBSCRIBE_TOPIC_HOTEL = "hw-data-topic";
-    private static final String OUTPUT_TOPIC = "hotel-and-weather-joined";
+    private static final String OUTPUT_TOPIC = "hotel-and-weather-joined-simple";
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d");
     static Consumer<String, String> consumerHotel = null;
     static Producer<String, String> producer = null;
@@ -78,9 +78,7 @@ public class Main {
                 if(pair != null && pair.getRight() != 0){
                     Double avgTemp = pair.getLeft() / pair.getRight();
                     StringBuilder builder = new StringBuilder();
-                    builder.append(hotelData.getId()).append(comma).append(hotelData.getName()).append(comma);
-                    builder.append(hotelData.getCountry()).append(comma).append(hotelData.getCity()).append(comma);
-                    builder.append(hotelData.getAddress()).append(comma).append(dateFormat.format(date)).append(comma);
+                    builder.append(hotelData.getId()).append(comma).append(dateFormat.format(date)).append(comma);
                     builder.append(decimalFormat.format(avgTemp)).append('\n');
                     send(builder.toString());
                 }
